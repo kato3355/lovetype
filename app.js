@@ -34,7 +34,7 @@ function renderCharacterGrid() {
           ? `<img class="char-img" src="${imageUrl}" alt="${char.name}">`
           : `<span class="char-emoji">${char.emoji}</span>`
         }
-        <span class="char-name">${char.name}</span>
+        <span class="char-name">${char.name}<br><span class="char-code">(${char.id})</span></span>
       </button>
     `;
   }).join('');
@@ -43,8 +43,8 @@ function renderCharacterGrid() {
 // Render style selection grid
 function renderStyleGrid() {
   styleGrid.innerHTML = Object.values(STYLES).map(style => `
-    <button class="style-btn" data-id="${style.id}" style="--style-color: ${style.color}">
-      <span class="style-name" style="color: ${style.color}">${style.name}</span>
+    <button class="style-btn" data-id="${style.id}" style="--style-color: ${style.color}; background-color: ${style.color}">
+      <span class="style-name">${style.name} (${style.id})</span>
       <span class="style-desc">${style.description}</span>
     </button>
   `).join('');
@@ -113,14 +113,6 @@ function updateStyleSelection() {
   document.querySelectorAll('.style-btn').forEach(btn => {
     const isSelected = btn.dataset.id === selectedStyle;
     btn.classList.toggle('selected', isSelected);
-    if (isSelected) {
-      const style = getStyle(btn.dataset.id);
-      btn.style.borderColor = style.color;
-      btn.style.backgroundColor = `${style.color}15`;
-    } else {
-      btn.style.borderColor = '#e0e0e0';
-      btn.style.backgroundColor = 'white';
-    }
   });
 }
 
