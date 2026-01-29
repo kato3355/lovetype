@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ラブキャラ診断64 - 複数人比較</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>ラブキャラ診断64</h1>
+      <p class="subtitle">複数人の診断結果を比較しよう</p>
+    </header>
+
+    <main class="main">
+      <section class="people-section">
+        <div class="people-grid" id="peopleGrid">
+          <button class="add-button" id="addButton">
+            <span class="plus">+</span>
+            <span>追加する</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="compatibility-section" id="compatibilitySection">
+        <h2>相性診断</h2>
+        <div class="compatibility-grid" id="compatibilityGrid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>診断は <a href="https://lovecharacter64.jp/" target="_blank">ラブキャラ診断64公式サイト</a> で行えます</p>
+    </footer>
+  </div>
+
+  <!-- モーダル -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h2>タイプを選択</h2>
+
+      <div class="form-group">
+        <label>名前</label>
+        <input type="text" id="personName" placeholder="名前を入力">
+      </div>
+
+      <div class="form-group">
+        <label>キャラクター</label>
+        <div class="character-grid" id="characterGrid"></div>
+      </div>
+
+      <div class="form-group">
+        <label>系統</label>
+        <div class="style-grid" id="styleGrid"></div>
+      </div>
+
+      <div class="preview" id="preview"></div>
+
+      <button class="submit-button" id="submitButton" disabled>追加する</button>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
