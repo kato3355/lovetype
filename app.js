@@ -220,7 +220,7 @@ function updateCompatibilitySection() {
     const char2 = getCharacter(person2.characterId);
     const style1 = getStyle(person1.styleId);
     const style2 = getStyle(person2.styleId);
-    const result = calculateCompatibility(person1.styleId, person2.styleId);
+    const result = calculateCompatibility(person1.characterId, person2.characterId);
     const img1 = getImageUrl(person1.characterId, person1.styleId);
     const img2 = getImageUrl(person2.characterId, person2.styleId);
 
@@ -240,14 +240,8 @@ function updateCompatibilitySection() {
           </div>
         </div>
         <div class="result">
-          <div class="score-circle" style="border-color: ${result.color}">
-            <span class="score">${result.score}</span>
-            <span class="score-label">%</span>
-          </div>
-          <div class="result-info">
-            <span class="level-badge" style="background-color: ${result.color}">${result.text}</span>
-            <p class="result-desc">${result.description}</p>
-          </div>
+          <span class="level-badge" style="background-color: ${result.color}">${result.text}</span>
+          <p class="result-desc">${result.description}</p>
         </div>
       </div>
     `;

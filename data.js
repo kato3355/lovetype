@@ -29,31 +29,96 @@ const CHARACTERS = [
 // 64タイプの画像URL（系統別） - 必要に応じて追加可能
 const IMAGE_URLS = {};
 
-// 相性計算用データ
-const COMPATIBILITY = {
-  'VD-VD': { level: 'good', score: 75 },
-  'VD-VI': { level: 'best', score: 95 },
-  'VD-ND': { level: 'good', score: 75 },
-  'VD-NI': { level: 'challenging', score: 40 },
-  'VI-VD': { level: 'best', score: 95 },
-  'VI-VI': { level: 'good', score: 75 },
-  'VI-ND': { level: 'neutral', score: 55 },
-  'VI-NI': { level: 'good', score: 75 },
-  'ND-VD': { level: 'good', score: 75 },
-  'ND-VI': { level: 'neutral', score: 55 },
-  'ND-ND': { level: 'best', score: 95 },
-  'ND-NI': { level: 'good', score: 75 },
-  'NI-VD': { level: 'challenging', score: 40 },
-  'NI-VI': { level: 'good', score: 75 },
-  'NI-ND': { level: 'good', score: 75 },
-  'NI-NI': { level: 'best', score: 95 },
+// キャラクター同士の相性データ（公式準拠）
+// best=★ベストマッチ, good=○相性いい, challenging=▲相性がよくない
+const CHAR_COMPATIBILITY = {
+  // ボス猫
+  'LCRO-FAPE': { level: 'best', description: 'リード＆サポートで最高の相性' },
+  'LCRO-FCRE': { level: 'good', description: '強さと可愛さでお互い惹かれ合う' },
+  'LCRO-FCPE': { level: 'good', description: '振り回しても楽しめる関係' },
+  'LCRO-LCRO': { level: 'challenging', description: '主導権を譲らず衝突しやすい' },
+  // 隠れベイビー
+  'LCRE-FARE': { level: 'best', description: '甘えたい気持ちを理解してくれる' },
+  'LCRE-LCRE': { level: 'good', description: '同じ性質で安心できる関係' },
+  'LCRE-FCPE': { level: 'good', description: '一途な姿に心が動かされる' },
+  'LCRE-LAPO': { level: 'challenging', description: '個性が強すぎて噛み合いにくい' },
+  // 主役体質
+  'LCPO-FAPO': { level: 'best', description: '自由を尊重し合える居心地の良さ' },
+  'LCPO-FARE': { level: 'good', description: '不安をうまく支えてくれる' },
+  'LCPO-LAPE': { level: 'good', description: '一緒に盛り上がれる関係' },
+  'LCPO-FCRO': { level: 'challenging', description: '駆け引き合戦で疲れやすい' },
+  // ツンデレヤンキー
+  'LCPE-FARO': { level: 'best', description: '素を出せて安心できる相性' },
+  'LCPE-LARE': { level: 'good', description: '本音を理解し合える関係' },
+  'LCPE-LCPE': { level: 'good', description: '喧嘩も多いけど愛情深い' },
+  'LCPE-FCPO': { level: 'challenging', description: '盛り上がるが衝突しやすい' },
+  // 憧れの先輩
+  'LARO-FCPE': { level: 'best', description: '一途さが心地よく安心できる関係' },
+  'LARO-FAPO': { level: 'good', description: '気を使わず自然体でいられる' },
+  'LARO-FAPE': { level: 'good', description: '優しさを受け止め合える理想の関係' },
+  'LARO-LARO': { level: 'challenging', description: '大人すぎて距離が縮みにくい' },
+  // カリスマバランサー
+  'LARE-FCRE': { level: 'best', description: '甘えを受け止めて支え合える' },
+  'LARE-LCPE': { level: 'good', description: '不器用でも本音で向き合える' },
+  'LARE-FCPO': { level: 'good', description: '自由さをうまくコントロールできる' },
+  'LARE-FARO': { level: 'challenging', description: '奥手すぎてなかなか進展しない' },
+  // パーフェクトカメレオン
+  'LAPO-FCPO': { level: 'best', description: '熱いアプローチに心を動かされる' },
+  'LAPO-FAPE': { level: 'good', description: '自由を理解し合える心地よい関係' },
+  'LAPO-LAPO': { level: 'good', description: 'お互いの個性を尊重できる' },
+  'LAPO-LCRE': { level: 'challenging', description: '真面目すぎて理解されにくい' },
+  // キャプテンライオン
+  'LAPE-FCRO': { level: 'best', description: '本音を引き出してくれる相性' },
+  'LAPE-LAPE': { level: 'good', description: '信頼感たっぷりで安心できる' },
+  'LAPE-LCPO': { level: 'good', description: '自由さを受け止めつつ楽しく過ごせる' },
+  'LAPE-FARE': { level: 'challenging', description: 'まとめ役同士で衝突しやすい' },
+  // ロマンスマジシャン
+  'FCRO-LAPE': { level: 'best', description: '刺激的でワクワクできる関係' },
+  'FCRO-FCRO': { level: 'good', description: '価値観が合えば最高の相性' },
+  'FCRO-FARE': { level: 'good', description: '一番うまく扱ってくれる相手' },
+  'FCRO-LCPO': { level: 'challenging', description: '主役争いでうまくいかない' },
+  // ちゃっかりうさぎ
+  'FCRE-LARE': { level: 'best', description: '甘えを受け止め安心できる相性' },
+  'FCRE-LCRO': { level: 'good', description: '強さと可愛さで惹かれ合う' },
+  'FCRE-FCRE': { level: 'good', description: '同じ価値観で居心地が良い' },
+  'FCRE-FAPO': { level: 'challenging', description: '気まぐれさに振り回されやすい' },
+  // 恋愛モンスター
+  'FCPO-LAPO': { level: 'best', description: '自由さに夢中になれる関係' },
+  'FCPO-FARO': { level: 'good', description: 'ミステリアスさに惹かれる' },
+  'FCPO-LARE': { level: 'good', description: '自由を受け止めて安定できる' },
+  'FCPO-LCPE': { level: 'challenging', description: '熱くなる分、衝突も多い' },
+  // 忠犬ハチ公
+  'FCPE-LARO': { level: 'best', description: '優しく包み込んでくれる理想的な相性' },
+  'FCPE-LCRE': { level: 'good', description: '純粋さで自然に惹かれ合う' },
+  'FCPE-LCRO': { level: 'good', description: '振り回されても楽しい関係' },
+  'FCPE-FCPE': { level: 'challenging', description: '不安が強まりやすい組み合わせ' },
+  // 不思議生命体
+  'FARO-LCPE': { level: 'best', description: '情熱とゆるさで心地よい相性' },
+  'FARO-FCPO': { level: 'good', description: '情熱に惹かれて深まる関係' },
+  'FARO-FARO': { level: 'good', description: '個性を尊重し合える心地よさ' },
+  'FARO-LARE': { level: 'challenging', description: '慎重すぎてなかなか進展しない' },
+  // 敏腕マネージャー
+  'FARE-LCRE': { level: 'best', description: '本音を理解して安心できる関係' },
+  'FARE-LCPO': { level: 'good', description: '華やかさをサポートし合える' },
+  'FARE-FCRO': { level: 'good', description: '駆け引きも楽しめる大人の関係' },
+  'FARE-LAPE': { level: 'challenging', description: 'まとめ役同士で衝突しやすい' },
+  // デビル天使
+  'FAPO-LCPO': { level: 'best', description: '自由を受け止め合える最高の相性' },
+  'FAPO-FAPO': { level: 'good', description: '気楽で自然体な関係が続く' },
+  'FAPO-LARO': { level: 'good', description: '穏やかで安心できる大人の相性' },
+  'FAPO-FCRE': { level: 'challenging', description: '真逆の気質で乱れやすい' },
+  // 最後の恋人
+  'FAPE-LCRO': { level: 'best', description: '包容力と情熱で理想の関係' },
+  'FAPE-LAPO': { level: 'good', description: '予測不能さで刺激をもらえる' },
+  'FAPE-LARO': { level: 'good', description: '安心感のある穏やかな関係' },
+  'FAPE-FAPE': { level: 'challenging', description: '優しすぎて距離が縮まらない' },
 };
 
 const COMPATIBILITY_LABELS = {
-  best: { text: '最高', color: '#FF6B9D', description: '最高の相性！お互いを高め合える関係' },
-  good: { text: '良好', color: '#4A90D9', description: '良い相性。自然と理解し合える' },
-  neutral: { text: '普通', color: '#95A5A6', description: '普通の相性。努力次第で良くなる' },
-  challenging: { text: '刺激的', color: '#E67E22', description: '刺激的な相性。違いを楽しめるかがカギ' },
+  best: { text: '★ ベストマッチ', color: '#FF6B9D' },
+  good: { text: '○ 相性いい', color: '#4A90D9' },
+  neutral: { text: '― ふつう', color: '#95A5A6' },
+  challenging: { text: '▲ 相性がよくない', color: '#E67E22' },
 };
 
 // ヘルパー関数
@@ -81,11 +146,23 @@ function getFullTypeName(charId, styleId) {
   return `${style.name}${char.name}`;
 }
 
-function calculateCompatibility(style1, style2) {
-  const key = `${style1}-${style2}`;
-  const result = COMPATIBILITY[key] || { level: 'neutral', score: 55 };
+function calculateCompatibility(charId1, charId2) {
+  // 両方向でチェック
+  const key1 = `${charId1}-${charId2}`;
+  const key2 = `${charId2}-${charId1}`;
+  const result = CHAR_COMPATIBILITY[key1] || CHAR_COMPATIBILITY[key2] || null;
+
+  if (result) {
+    return {
+      ...result,
+      ...COMPATIBILITY_LABELS[result.level],
+    };
+  }
+
+  // データにない組み合わせ
   return {
-    ...result,
-    ...COMPATIBILITY_LABELS[result.level],
+    level: 'neutral',
+    description: '特別な相性データはありません',
+    ...COMPATIBILITY_LABELS['neutral'],
   };
 }
