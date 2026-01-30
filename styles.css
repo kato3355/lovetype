@@ -135,31 +135,33 @@ body {
 }
 
 .person-card .type-image {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   object-fit: contain;
   margin-bottom: 12px;
 }
 
 .person-card .type-emoji {
-  font-size: 80px;
+  font-size: 100px;
   margin-bottom: 12px;
 }
 
-.person-card .style-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 8px;
+.person-card .type-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.person-card .style-label {
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .person-card .character-name {
   font-size: 18px;
   font-weight: 700;
-  margin-bottom: 4px;
 }
 
 .person-card .type-code {
@@ -215,20 +217,21 @@ body {
 .compatibility-card .pair-person {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .compatibility-card .pair-person img {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
 }
 
 .compatibility-card .pair-person .emoji {
-  font-size: 24px;
+  font-size: 28px;
 }
 
 .compatibility-card .pair-person .name {
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -236,8 +239,9 @@ body {
   padding: 2px 8px;
   border-radius: 12px;
   color: white;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .compatibility-card .connector {

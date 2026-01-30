@@ -181,8 +181,10 @@ function renderPeople() {
             ? `<img class="type-image" src="${imageUrl}" alt="${char.name}">`
             : `<div class="type-emoji">${char.emoji}</div>`
           }
-          <span class="style-badge" style="background-color: ${style.color}">${style.name}</span>
-          <div class="character-name">${char.name}</div>
+          <div class="type-name-row">
+            <span class="style-label" style="color: ${style.color}">${style.name}</span>
+            <span class="character-name">${char.name}</span>
+          </div>
           <p class="type-code">${person.characterId}-${person.styleId}</p>
         </div>
       </div>
@@ -226,15 +228,15 @@ function updateCompatibilitySection() {
       <div class="compatibility-card" style="border-color: ${result.color}">
         <div class="pair-header">
           <div class="pair-person">
+            <span class="badge" style="background-color: ${style1.color}">${style1.name}</span>
             ${img1 ? `<img src="${img1}" alt="${char1.name}">` : `<span class="emoji">${char1.emoji}</span>`}
             <span class="name">${person1.name}</span>
-            <span class="badge" style="background-color: ${style1.color}">${style1.name}</span>
           </div>
           <span class="connector">×</span>
           <div class="pair-person">
+            <span class="badge" style="background-color: ${style2.color}">${style2.name}</span>
             ${img2 ? `<img src="${img2}" alt="${char2.name}">` : `<span class="emoji">${char2.emoji}</span>`}
             <span class="name">${person2.name}</span>
-            <span class="badge" style="background-color: ${style2.color}">${style2.name}</span>
           </div>
         </div>
         <div class="result">
