@@ -183,7 +183,7 @@ function renderPeople() {
           }
           <span class="style-badge" style="background-color: ${style.color}">${style.name}</span>
           <div class="character-name">${char.name}</div>
-          <p class="description">${char.description}</p>
+          <p class="type-code">${person.characterId}-${person.styleId}</p>
         </div>
       </div>
     `;
