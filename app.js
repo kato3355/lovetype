@@ -182,10 +182,10 @@ function renderPeople() {
             : `<div class="type-emoji">${char.emoji}</div>`
           }
           <div class="type-name-row">
-            <span class="style-label" style="color: ${style.color}">${style.name}</span>
+            <span class="style-badge" style="background-color: ${style.color}">${style.name}</span>
             <span class="character-name">${char.name}</span>
           </div>
-          <p class="type-code">${person.characterId}-${person.styleId}</p>
+          <p class="type-code">(${person.characterId}-${person.styleId})</p>
         </div>
       </div>
     `;
